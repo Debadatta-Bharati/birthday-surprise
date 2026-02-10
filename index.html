@@ -51,6 +51,7 @@ h1 { color: #e91e63; }
   display: block;
 }
 
+
 /* Floating hearts */
 .heart {
   position: fixed;
@@ -80,11 +81,12 @@ canvas {
 <body>
 
 <!-- 🎵 Birthday Music -->
-<audio id="bgm" loop>
-  <source src="birthday.mp3" type="audio/mpeg">
+<audio id="bgm" loop preload="auto">
+  <source src="C:\Users\Debadatta\Desktop\birthday-surprise\birthday.mp3" type="audio/mpeg">
 </audio>
 
-  
+
+
 <canvas id="fireworks"></canvas>
 
 <div class="container">
@@ -112,6 +114,13 @@ canvas {
 /* 🎁 Open Gift */
 function openGift() {
   document.getElementById("content").style.display = "block";
+
+  const music = document.getElementById("bgm");
+
+  // force play inside click
+  music.currentTime = 0;
+  music.play();
+
   startFireworks();
 }
 
@@ -132,7 +141,7 @@ let index = 0;
 setInterval(() => {
   index = (index + 1) % images.length;
   document.getElementById("slide").src = images[index];
-}, 2500);
+}, 1000);
 
 /* 🎆 Fireworks Effect */
 const canvas = document.getElementById("fireworks");
@@ -176,7 +185,3 @@ function startFireworks() {
 
 </body>
 </html>
-
-
-
-
