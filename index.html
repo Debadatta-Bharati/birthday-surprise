@@ -43,9 +43,12 @@ h1 { color: #e91e63; }
 
 /* Slideshow */
 .slideshow img {
-  width: 100%;
+  width: 220px;
+  max-width: 90%;
+  height: auto;
   border-radius: 12px;
-  margin-top: 15px;
+  margin: 15px auto;
+  display: block;
 }
 
 /* Floating hearts */
@@ -80,9 +83,6 @@ canvas {
 <audio id="bgm" loop>
   <source src="birthday.mp3" type="audio/mpeg">
 </audio>
-  <button onclick="document.getElementById('bgm').play()" style="padding:10px;font-size:18px;">
-🎵 Play Music
-</button>
 
   
 <canvas id="fireworks"></canvas>
@@ -176,6 +176,7 @@ function startFireworks() {
 
 </body>
 </html>
+
 
 
 
