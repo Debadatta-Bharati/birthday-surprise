@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I Love You ❤️</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  overflow: hidden;
+}
+
+/* Center box */
+.container {
+  text-align: center;
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  max-width: 350px;
+  margin: 70px auto;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  position: relative;
+  z-index: 10;
+}
+
+h1 { color: #e91e63; }
+
+.gift {
+  font-size: 90px;
+  cursor: pointer;
+  animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+.hidden { display: none; }
+
+/* Slideshow */
+.slideshow img {
+  width: 100%;
+  border-radius: 12px;
+  margin-top: 15px;
+}
+
+/* Floating hearts */
+.heart {
+  position: fixed;
+  bottom: 0;
+  font-size: 22px;
+  animation: float 5s linear infinite;
+  color: #ff1744;
+  z-index: 5;
+}
+
+@keyframes float {
+  from { transform: translateY(0); opacity: 1; }
+  to { transform: translateY(-100vh); opacity: 0; }
+}
+
+/* 🎆 Fireworks canvas */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 🎵 Birthday Music -->
+<audio autoplay loop>
+  <source src="birthday.mp3" type="audio/mpeg">
+</audio>
+
+<canvas id="fireworks"></canvas>
+
+<div class="container">
+  <h1>❤️ I Love You ❤️</h1>
+  <div class="gift" onclick="openGift()">🎁</div>
+
+  <div id="content" class="hidden">
+    <h2>🎉 Happy Birthday My Love 🎉</h2>
+
+    <!-- ✍️ Personal Message -->
+    <p>
+      You are the most beautiful part of my life 💕  
+      Every smile of yours makes my world brighter.  
+      I love you more than words can say ❤️
+    </p>
+
+    <!-- 🖼 Photo Slideshow -->
+    <div class="slideshow">
+      <img id="slide" src="photo1.jpg">
+    </div>
+  </div>
+</div>
+
+<script>
+/* 🎁 Open Gift */
+function openGift() {
+  document.getElementById("content").style.display = "block";
+  startFireworks();
+}
+
+/* 💖 Floating Hearts */
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 300);
+
+/* 🖼 Slideshow */
+let images = ["photo1.jpg", "photo2.jpg", "photo3.jpg"];
+let index = 0;
+setInterval(() => {
+  index = (index + 1) % images.length;
+  document.getElementById("slide").src = images[index];
+}, 2500);
+
+/* 🎆 Fireworks Effect */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function firework() {
+  const x = Math.random() * canvas.width;
+  const y = Math.random() * canvas.height / 2;
+  const particles = 30;
+
+  for (let i = 0; i < particles; i++) {
+    const angle = (Math.PI * 2) / particles * i;
+    const speed = Math.random() * 4 + 2;
+    let px = x, py = y;
+    let vx = Math.cos(angle) * speed;
+    let vy = Math.sin(angle) * speed;
+
+    let life = 30;
+    function animate() {
+      if (life-- <= 0) return;
+      ctx.fillStyle = `hsl(${Math.random()*360},100%,60%)`;
+      ctx.fillRect(px, py, 3, 3);
+      px += vx;
+      py += vy;
+      vy += 0.05;
+      requestAnimationFrame(animate);
+    }
+    animate();
+  }
+}
+
+function startFireworks() {
+  setInterval(() => {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    firework();
+  }, 800);
+}
+</script>
+
+</body>
+</html>
