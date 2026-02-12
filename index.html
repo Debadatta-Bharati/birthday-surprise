@@ -3,71 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>I Love You ❤️</title>
+<title>Mega Romantic Surprise ❤️</title>
 
 <style>
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  overflow: hidden;
+  background: radial-gradient(circle at top, #1a001f, #000);
+  overflow-x: hidden;
+  color: white;
 }
 
-/* Center box */
+/* Stars */
+.star {
+  position: fixed;
+  width: 2px;
+  height: 2px;
+  background: white;
+  opacity: 0.8;
+  animation: twinkle 2s infinite alternate;
+}
+@keyframes twinkle {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+/* Main Box */
 .container {
   text-align: center;
-  background: white;
+  background: rgba(255,255,255,0.95);
+  color: black;
   padding: 25px;
   border-radius: 18px;
-  max-width: 350px;
-  margin: 70px auto;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+  max-width: 360px;
+  margin: 140px auto 60px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.5);
   position: relative;
   z-index: 10;
 }
 
-h1 { color: #e91e63; }
+.hidden { display: none; }
 
+/* Gift */
 .gift {
   font-size: 90px;
   cursor: pointer;
   animation: bounce 1.5s infinite;
 }
-
 @keyframes bounce {
   0%,100% { transform: translateY(0); }
   50% { transform: translateY(-15px); }
 }
 
-.hidden { display: none; }
+/* Cake */
+#cakeBox {
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  z-index: 20;
+  transition: top 1s ease;
+}
+#cakeBox.show { top: 20px; }
+
+.cake-wrapper {
+  font-size: 90px;
+  cursor: pointer;
+  position: relative;
+  animation: glow 1.5s infinite alternate;
+}
+@keyframes glow {
+  from { text-shadow: 0 0 10px #ff4081; }
+  to { text-shadow: 0 0 30px #ff1744, 0 0 60px #ff80ab; }
+}
+
+.flame {
+  width: 8px;
+  height: 18px;
+  background: orange;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: -15px;
+  transform: translateX(-50%);
+  animation: flicker 0.2s infinite alternate;
+}
+@keyframes flicker {
+  from { transform: translateX(-50%) scaleY(1); }
+  to { transform: translateX(-50%) scaleY(1.2); }
+}
 
 /* Slideshow */
 .slideshow img {
   width: 220px;
-  max-width: 90%;
-  height: auto;
   border-radius: 12px;
   margin: 15px auto;
   display: block;
 }
 
-
-/* Floating hearts */
+/* Hearts */
 .heart {
   position: fixed;
   bottom: 0;
-  font-size: 22px;
+  font-size: 20px;
   animation: float 5s linear infinite;
-  color: #ff1744;
   z-index: 5;
 }
-
 @keyframes float {
   from { transform: translateY(0); opacity: 1; }
   to { transform: translateY(-100vh); opacity: 0; }
 }
 
-/* 🎆 Fireworks canvas */
+/* Love Screen */
+#loveScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #ff1744;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+  z-index: 50;
+}
+
+/* Proposal */
+#proposal button {
+  padding: 12px 25px;
+  font-size: 18px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+}
+#yesBtn { background: #e91e63; color: white; }
+#noBtn { background: gray; color: white; position: absolute; }
+
+/* Typing Letter */
+#letter {
+  margin-top: 15px;
+  font-style: italic;
+  min-height: 60px;
+}
+
+/* WhatsApp Chat */
+.chat {
+  margin-top: 15px;
+}
+.msg {
+  max-width: 75%;
+  padding: 8px;
+  border-radius: 10px;
+  margin: 5px;
+  opacity: 0;
+}
+.left { background: #eee; text-align: left; }
+.right { background: #dcf8c6; margin-left: auto; text-align: right; }
+
+/* Canvas */
 canvas {
   position: fixed;
   top: 0;
@@ -80,14 +176,22 @@ canvas {
 
 <body>
 
-<!-- 🎵 Birthday Music -->
-<audio id="bgm" loop preload="auto">
-  <source src="birthday.mp3.mp3" type="audio/mpeg">
+<audio id="bgm" loop>
+<source src="birthday.mp3.mp3" type="audio/mpeg">
 </audio>
 
-
-
 <canvas id="fireworks"></canvas>
+
+<div id="loveScreen">💖 FOREVER YOURS 💖</div>
+
+<!-- Cake -->
+<div id="cakeBox" class="hidden">
+  <div class="cake-wrapper" onclick="cutCake()">
+    🎂
+    <div class="flame"></div>
+  </div>
+  <p id="cakeText" class="hidden">💖 Make a wish 💖</p>
+</div>
 
 <div class="container">
   <h1>❤️ I Love You ❤️</h1>
@@ -96,90 +200,167 @@ canvas {
   <div id="content" class="hidden">
     <h2>🎉 Happy Birthday My Love 🎉</h2>
 
-    <!-- ✍️ Personal Message -->
-    <p>
-      You are the most beautiful part of my life 💕  
-      Every smile of yours makes my world brighter.  
-      I love you more than words can say ❤️
-    </p>
-
-    <!-- 🖼 Photo Slideshow -->
     <div class="slideshow">
       <img id="slide" src="photo1.jpeg">
+    </div>
+
+    <div id="letter"></div>
+
+    <div id="proposal" class="hidden" style="position:relative;">
+      <h2>💍 Will You Be Mine Forever? 💍</h2>
+      <button id="yesBtn" onclick="sayYes()">YES 💖</button>
+      <button id="noBtn" onmouseover="moveNo()">NO 😜</button>
+    </div>
+
+    <div class="chat" id="chatBox">
+      <div class="msg left">Hey ❤️</div>
+      <div class="msg right">Yes love 😊</div>
+      <div class="msg left">Do you know why today is special?</div>
+      <div class="msg right">Because I’m loved 😘</div>
     </div>
   </div>
 </div>
 
 <script>
-/* 🎁 Open Gift */
-function openGift() {
-  document.getElementById("content").style.display = "block";
-
-  const music = document.getElementById("bgm");
-
-  // force play inside click
-  music.currentTime = 0;
-  music.play();
-
-  startFireworks();
+/* Stars */
+for(let i=0;i<100;i++){
+ let s=document.createElement("div");
+ s.className="star";
+ s.style.left=Math.random()*100+"vw";
+ s.style.top=Math.random()*100+"vh";
+ document.body.appendChild(s);
 }
 
-/* 💖 Floating Hearts */
-setInterval(() => {
-  const heart = document.createElement("div");
-  heart.className = "heart";
-  heart.innerHTML = "💖";
-  heart.style.left = Math.random() * 100 + "vw";
-  heart.style.animationDuration = (Math.random() * 3 + 3) + "s";
-  document.body.appendChild(heart);
-  setTimeout(() => heart.remove(), 5000);
-}, 300);
+/* Open Gift */
+function openGift(){
+ document.getElementById("content").classList.remove("hidden");
+ document.getElementById("cakeBox").classList.remove("hidden");
+ setTimeout(()=>document.getElementById("cakeBox").classList.add("show"),300);
 
-/* 🖼 Slideshow */
-let images = ["photo1.jpeg", "photo2.jpeg", "photo3.jpeg"];
-let index = 0;
-setInterval(() => {
-  index = (index + 1) % images.length;
-  document.getElementById("slide").src = images[index];
-}, 1000);
+ const music=document.getElementById("bgm");
+ music.volume=0;
+ music.play().catch(()=>{});
+ let v=0;
+ let fade=setInterval(()=>{
+  if(v<0.7){v+=0.02; music.volume=v;}
+  else clearInterval(fade);
+ },200);
 
-/* 🎆 Fireworks Effect */
-const canvas = document.getElementById("fireworks");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-function firework() {
-  const x = Math.random() * canvas.width;
-  const y = Math.random() * canvas.height / 2;
-  const particles = 30;
-
-  for (let i = 0; i < particles; i++) {
-    const angle = (Math.PI * 2) / particles * i;
-    const speed = Math.random() * 4 + 2;
-    let px = x, py = y;
-    let vx = Math.cos(angle) * speed;
-    let vy = Math.sin(angle) * speed;
-
-    let life = 30;
-    function animate() {
-      if (life-- <= 0) return;
-      ctx.fillStyle = `hsl(${Math.random()*360},100%,60%)`;
-      ctx.fillRect(px, py, 3, 3);
-      px += vx;
-      py += vy;
-      vy += 0.05;
-      requestAnimationFrame(animate);
-    }
-    animate();
-  }
+ startTyping();
+ animateChat();
+ startFireworks();
 }
 
-function startFireworks() {
-  setInterval(() => {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    firework();
-  }, 800);
+/* Typing Letter */
+const text="You are my heart, my happiness, and my forever 💕";
+let idx=0;
+function startTyping(){
+ let interval=setInterval(()=>{
+  document.getElementById("letter").innerHTML+=text[idx];
+  idx++;
+  if(idx>=text.length) clearInterval(interval);
+ },60);
+}
+
+/* Chat animation */
+function animateChat(){
+ let msgs=document.querySelectorAll(".msg");
+ msgs.forEach((m,i)=>{
+  setTimeout(()=>{m.style.opacity=1;},i*800);
+ });
+}
+
+/* Cake */
+function cutCake(){
+ document.querySelector(".flame").style.display="none";
+ document.getElementById("cakeText").classList.remove("hidden");
+ document.getElementById("proposal").classList.remove("hidden");
+ confettiBlast();
+}
+
+/* Move NO */
+function moveNo(){
+ const btn=document.getElementById("noBtn");
+ btn.style.top=Math.random()*100+"px";
+ btn.style.left=Math.random()*200+"px";
+}
+
+/* YES */
+function sayYes(){
+ document.getElementById("loveScreen").style.display="flex";
+ for(let i=0;i<20;i++){
+  setTimeout(firework,i*150);
+ }
+}
+
+/* Hearts */
+setInterval(()=>{
+ let h=document.createElement("div");
+ h.className="heart";
+ h.innerHTML=Math.random()>0.5?"💖":"❤️";
+ h.style.left=Math.random()*100+"vw";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),5000);
+},300);
+
+/* Slideshow */
+let images=["photo1.jpeg","photo2.jpeg","photo3.jpeg"];
+let i=0;
+setInterval(()=>{
+ i=(i+1)%images.length;
+ document.getElementById("slide").src=images[i];
+},2500);
+
+/* Confetti */
+function confettiBlast(){
+ for(let i=0;i<60;i++){
+  let c=document.createElement("div");
+  c.style.position="fixed";
+  c.style.width="6px";
+  c.style.height="6px";
+  c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+  c.style.top="0px";
+  c.style.left=Math.random()*100+"vw";
+  c.style.zIndex="30";
+  document.body.appendChild(c);
+  let fall=setInterval(()=>{
+   c.style.top=parseInt(c.style.top)+5+"px";
+   if(parseInt(c.style.top)>window.innerHeight){
+    clearInterval(fall);
+    c.remove();
+   }
+  },20);
+ }
+}
+
+/* Fireworks */
+const canvas=document.getElementById("fireworks");
+const ctx=canvas.getContext("2d");
+canvas.width=innerWidth;
+canvas.height=innerHeight;
+
+function firework(){
+ const x=Math.random()*canvas.width;
+ const y=Math.random()*canvas.height/2;
+ for(let i=0;i<30;i++){
+  let px=x,py=y;
+  let vx=Math.cos(i)*4;
+  let vy=Math.sin(i)*4;
+  let life=30;
+  (function anim(){
+   if(life--<=0)return;
+   ctx.fillStyle=`hsl(${Math.random()*360},100%,60%)`;
+   ctx.fillRect(px,py,3,3);
+   px+=vx; py+=vy; vy+=0.05;
+   requestAnimationFrame(anim);
+  })();
+ }
+}
+function startFireworks(){
+ setInterval(()=>{
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  firework();
+ },1000);
 }
 </script>
 
